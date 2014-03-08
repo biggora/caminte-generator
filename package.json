@@ -13,20 +13,28 @@
     }
   ],
   "dependencies": {
-    "commander": "1.3.2",
-    "mkdirp": "0.3.5"
+    "commander": "~1.3.2",
+    "mkdirp": "~0.3.5"
   },
   "keywords": [
     "caminte",
-    "express",
-    "framework",
-    "sinatra",
-    "web",
+    "server",
     "rest",
     "restful",
-    "router",
     "app",
-    "api"
+    "api",
+    "redis",
+    "mysql",
+    "mariadb",
+    "mongodb",
+    "neo4j",
+    "nano",
+    "couchdb",
+    "firebird",
+    "postgres",
+    "sqlite3",
+    "tingodb",
+    "rethinkdb"
   ],
   "repository": {
     "type": "git",
@@ -34,7 +42,9 @@
   },
   "main": "bin/caminte.js",
   "bin": {
-    "caminte": "./bin/caminte.js"
+    "caminte": "./bin/caminte.js",
+    "camintejs": "./bin/caminte.js",
+    "cjs": "./bin/caminte.js"
   },
   "engines": {
     "node": ">= 0.8.0"
