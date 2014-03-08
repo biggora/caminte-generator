@@ -12,10 +12,10 @@ module.exports = {
     autoupdate : true,
     db: {
         driver: "mysql",
-        host: "192.168.56.101",
+        host: "127.0.0.1",
         port: "3306",
-        username: "biggora",
-        password: "09091234",
-        database: "phpmyadmin" //, pool : true
+        username: "test",
+        password: "test",
+        database: "test" //, pool : true
     }
 };
