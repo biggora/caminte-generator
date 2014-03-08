@@ -1,7 +1,7 @@
 {
   "name": "caminte-generator",
   "description": "Caminte ReatFul application generator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Aleksej Gordejev",
     "email": "aleksej@gordejev.lv"
