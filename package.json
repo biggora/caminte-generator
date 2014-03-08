@@ -1,0 +1,45 @@
+{
+  "name": "caminte-generator",
+  "description": "Caminte ReatFul application generator",
+  "version": "0.0.1",
+  "author": {
+    "name": "Aleksej Gordejev",
+    "email": "aleksej@gordejev.lv"
+  },
+  "contributors": [
+    {
+      "name": "Aleksej Gordejev",
+      "email": "aleksej@gordejev.lv"
+    }
+  ],
+  "dependencies": {
+    "commander": "1.3.2",
+    "mkdirp": "0.3.5"
+  },
+  "keywords": [
+    "caminte",
+    "express",
+    "framework",
+    "sinatra",
+    "web",
+    "rest",
+    "restful",
+    "router",
+    "app",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/biggora/caminte-generator"
+  },
+  "main": "bin/caminte.js",
+  "bin": {
+    "caminte": "./bin/caminte.js"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "bugs": {
+    "url": "https://github.com/biggora/caminte-generator/issues"
+  }
+}
