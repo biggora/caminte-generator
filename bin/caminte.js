@@ -151,7 +151,7 @@ function parseFields() {
             var fdata = process.argv[i].split(':');
             var field = '';
             if (fdata[1]) {
-                var type = fdata[1].toLowerCase();
+                var type = 'type : String';
                 switch (type) {
                     case 'int':
                     case 'integer':
