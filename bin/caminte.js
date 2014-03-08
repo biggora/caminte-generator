@@ -177,6 +177,8 @@ function parseFields() {
                         type = 'type : String';
                 }
                 field += type;
+            } else {
+                field += 'type : String';
             }
             if (fdata[2]) {
                 field += ", 'default' : " + fdata[2];
