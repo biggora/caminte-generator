@@ -6,7 +6,6 @@
  *  CaminteJS homepage http://www.camintejs.com
  **/
 
-var pager = require('../lib/pager.js');
 var Tools = require('../lib/tools.js');
 var inflection = require('../lib/inflection.js');
 

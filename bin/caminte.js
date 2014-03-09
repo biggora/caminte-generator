@@ -8,7 +8,6 @@ var path = require('path');
 var inflection = require('../templates/js/lib/inflection');
 
 var pkg = require('../package.json');
-
 var version = pkg.version;
 
 function list(val) {
@@ -59,6 +58,7 @@ if (!program.init && !program.generate && !program.server) {
     destination_path += program.init;
     createApplication(destination_path);
 } else if (program.generate) {
+    program.generate = program.generate.toLowerCase().singularize();
     destination_path += 'models';
     createModel(destination_path);
 } else if (program.server) {
@@ -87,8 +87,7 @@ var app = fs.readFileSync(__dirname + '/../templates/js/app.js', 'utf-8');
 var www = fs.readFileSync(__dirname + '/../templates/js/www', 'utf-8');
 var cfg = fs.readFileSync(__dirname + '/../templates/js/config.js', 'utf-8');
 
-var inflection = fs.readFileSync(__dirname + '/../templates/js/lib/inflection.js', 'utf-8');
-var pager = fs.readFileSync(__dirname + '/../templates/js/lib/pager.js', 'utf-8');
+var inflect = fs.readFileSync(__dirname + '/../templates/js/lib/inflection.js', 'utf-8');
 var tools = fs.readFileSync(__dirname + '/../templates/js/lib/tools.js', 'utf-8');
 var xml = fs.readFileSync(__dirname + '/../templates/js/lib/xml.js', 'utf-8');
 
@@ -241,8 +240,7 @@ function createApplicationAt(path) {
         });
 
         mkdir(path + '/lib', function() {
-            write(path + '/lib/inflection.js', inflection);
-            write(path + '/lib/pager.js', pager);
+            write(path + '/lib/inflection.js', inflect);
             write(path + '/lib/tools.js', tools);
             write(path + '/lib/xml.js', xml);
         });

@@ -1,9 +1,11 @@
+[![Dependency Status](https://gemnasium.com/biggora/caminte-generator.png)](https://gemnasium.com/biggora/caminte-generator)
+[![NPM version](https://badge.fury.io/js/caminte-generator.png)](http://badge.fury.io/js/caminte-generator)
 ## CaminteJS RestFul server
 
-  Fast, unopinionated, minimalist restful server for [node](http://nodejs.org).
+  Fast, unopinionated, minimalist restful server for [node](http://nodejs.org/) and [express](http://expressjs.com/) based on [caminte orm](http://www.camintejs.com/).
 
-### CaminteJS db adapters:
-    mysql, sqlite3, riak, postgres, couchdb, mongodb, redis, rethinkdb, tingodb
+### CaminteJS ORM db adapters:
+    mysql, sqlite3, postgres, mongodb, redis, riak, couchdb(nano), rethinkdb, tingodb
 
 <table>
     <tr>
@@ -84,9 +86,9 @@ will provide the following routes:
     ------------------------------------------------------------
     GET           /:table                  index      
     GET           /:table/:id              show       
-    POST          /:table                  create     
+    POST          /:table                  create    
+    PUT           /:table/:id              update      
     DELETE        /:table/:id              destroy    
-    PUT           /:table/:id              update     
     DELETE        /:table                  destroyall  
 
 ### Directory structure
@@ -113,6 +115,7 @@ On initialization directories tree generated, like that:
     |       `-- ...
     |-- app.js
     `-- package.json
+
 
 
 ### Recommend extensions

@@ -86,6 +86,7 @@ app.on('models_loaded', function() {
     app.post('/:table.:format?', checkReqType, checkParams, rest.create);
     app.put('/:table/:id.:format?', checkReqType, checkParams, rest.update);
     app.del('/:table/:id.:format?', checkReqType, checkParams, rest.destroy);
+    app.del('/:table.:format?', checkReqType, checkParams, rest.destroyall);
 
     // catch 404 and forwarding to error handler
     app.use(function(req, res, next) {
