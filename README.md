@@ -154,3 +154,5 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 - Visit the [author website](http://www.gordejev.lv).
 - Follow [@biggora](https://twitter.com/#!/biggora) on Twitter for updates.
 - Report issues on the [github issues](https://github.com/biggora/caminte-generator/issues) page.
+
+[![Analytics](https://ga-beacon.appspot.com/UA-22788134-5/caminte-generator/readme)](https://github.com/igrigorik/ga-beacon) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/biggora/caminte-generator/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
