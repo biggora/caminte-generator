@@ -100,14 +100,14 @@ app.on('models_loaded', function() {
     // will print stacktrace
     if (app.get('env') === 'development') {
         app.use(function(err, req, res, next) {
-            res[req.format](err.code, { error : err });
+            res[req.format || 'json'](err.code || 400, { error : err });
         });
     }
 
     // production error handler
     // no stacktraces leaked to user
     app.use(function(err, req, res, next) {
-        res[req.format](err.code, { error : err.message });
+        res[req.format || 'json'](err.code || 400, { error : err.message });
     });
     app.emit('configured');
     if (config.debug) console.log('caminte application configured');
