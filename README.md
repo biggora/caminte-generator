@@ -53,7 +53,7 @@
 
     $ caminte -s
 
-## Calling a REST server with Command Line cURL
+#### Calling a REST server with Command Line cURL
 
  Create User:
 
@@ -65,7 +65,7 @@
 
  Get Users:
 
-    $ curl -X GET http://localhost:3000/users -i -H "Content-type: application/json" 
+    $ curl -X GET http://localhost:3000/users -i -H "Content-type: application/json" -d "skip=0&limit=10&sort=id:desc" 
 
  Delete User:
 

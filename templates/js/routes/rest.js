@@ -24,30 +24,35 @@ module.exports = {
         var sort = req.query.sort || req.body.sort;
         var search = req.query.search || req.body.search;
         var query = req.method === 'POST' ? req.body : req.query;
-        var from = req.params.from ? parseInt(req.params.from) - 1 : 0;
-        var to = req.params.to ? parseInt(req.params.to) : 20;
+        var skip = req.query.skip ? parseInt(req.query.skip) - 1 : 0;
+        var limit = req.query.limit ? parseInt(req.query.limit) : 20;
         var total = 0;
+
         var opts = {
-            skip: from,
-            limit: to,
+            skip: skip,
+            limit: limit,
             order: 'id DESC',
             where: {}
         };
 
         if (sort && sort !== '') {
             var direction = 'ASC';
-            if (sort.substr(0, 1) === '-') {
-                direction = 'DESC';
-                sort = sort.substr(1, sort.length);
+            var rdir = sort.toString().split(':');
+            if (rdir[1]) {
+                direction = rdir[1].toUpperCase();
+                sort = rdir[0];
+            } else {
+                opts.order = sort.toString() + " " + direction;
             }
-            opts.order = sort + " " + direction;
         }
 
         if (search && search !== "") {
-            search = search.toString().replace(/^\s|\s$/, "");
-            opts.where.name = {
-                regex: search
-            };
+            var rsearch = search.toString().replace(/^\s|\s$/, "").split(':');
+            if (rsearch[1]) {
+                opts.where[rsearch[0]] = {
+                    regex: rsearch[1]
+                };
+            }
         }
 
         Tools.validateFields(Model, query, {}, function(err, filtered) {
@@ -62,12 +67,12 @@ module.exports = {
                     }
                     var out = {
                         first_page: 1,
-                        curent_page: from / to + 1,
-                        total_pages: Math.ceil(total / to) + 1,
-                        items_per_page: to,
+                        curent_page: skip / limit + 1,
+                        total_pages: Math.ceil(total / limit) + 1,
+                        items_per_page: limit,
                         items_total: total,
-                        items_start: from,
-                        items_end: from + to
+                        items_start: skip,
+                        items_end: skip + limit
                     };
 
                     switch (req.format.toString()) {
