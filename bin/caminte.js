@@ -206,10 +206,10 @@ function createApplicationAt(path) {
         console.log('     $ cd %s && npm install', path);
         console.log();
         console.log('   run the app:');
-        console.log('     $ DEBUG=' + program.init + ' ./bin/www');
+        console.log('     $ caminte -s');
         console.log();
         console.log('   or:');
-        console.log('     $ caminte -s');
+        console.log('     $ DEBUG=' + program.init + ' ./bin/www');
         console.log();
     });
 
@@ -217,7 +217,7 @@ function createApplicationAt(path) {
         mkdir(path + '/models');
         mkdir(path + '/public');
         mkdir(path + '/public/js');
-        mkdir(path + '/public/images');
+        mkdir(path + '/public/img');
         mkdir(path + '/public/css', function() {
             switch (program.css) {
                 case 'less':
