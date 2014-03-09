@@ -53,6 +53,24 @@
 
     $ caminte -s
 
+## Calling a REST server with Command Line cURL
+
+ Create User:
+
+    $ curl -X POST http://localhost:3000/users -i -H "Content-type: application/json" -d "{\"name\":\"Alex Gora\",\"created\":\"2014-01-01\"}"
+ 
+ Update User:
+ 
+    $ curl -X PUT http://localhost:3000/users/1 -i -H "Content-type: application/json" -d "{\"pass\":\"6r87uyfGFTg\",\"email\":\"example@example.com\"}"
+
+ Get Users:
+
+    $ curl -X GET http://localhost:3000/users -i -H "Content-type: application/json" 
+
+ Delete User:
+
+    $ curl -X DELETE http://localhost:3000/users/1 -i -H "Content-type: application/json" 
+
 ### Usage
 
     $ caminte [options] [dir]

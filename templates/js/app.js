@@ -135,7 +135,8 @@ function bootModel(app, schema, file) {
  * @param {Object} res
  * @param {Function} next
  */
-function XMLResponse(req, res, next) {
+function XMLResponse(req, res, next) {    
+    res.setHeader("X-Powered-By", "CaminteJS RestFul");
     res.xml = function(code, data, params) {
         if (typeof code === 'object') {
             params = data;

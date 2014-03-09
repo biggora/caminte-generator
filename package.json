@@ -1,7 +1,8 @@
 {
   "name": "caminte-generator",
-  "description": "ReatFul application generator based on CaminteJS ORM",
-  "version": "0.0.3",
+  "description": "RestFul application generator based on CaminteJS ORM",
+  "homepage": "http://camintejs.com/",
+  "version": "0.0.4",
   "author": {
     "name": "Aleksej Gordejev",
     "email": "aleksej@gordejev.lv"
