@@ -23,6 +23,7 @@ program
         .option('-i, --init <appname>', 'create caminte application')
         .option('-g, --generate <modelname]', 'generate data model')
         .option('-s, --server', 'runs caminte server')
+        .option('-a, --adapter', 'database adapter (mysql|redis|etc...)')
         .option('-j, --jade', 'add jade engine support (defaults to ejs)')
         .option('-H, --hogan', 'add hogan.js engine support')
         .option('-c, --css <engine>', 'add css <engine> support (less|stylus|compass) (defaults to plain css)')
@@ -46,6 +47,10 @@ if (program.jade) {
 }
 if (program.hogan) {
     program.template = 'hjs';
+}
+
+if(!program.adapter) {
+    program.adapter = 'mysql';
 }
 
 if (!program.init && !program.generate && !program.server) {
@@ -204,6 +209,9 @@ function createApplicationAt(path) {
         console.log('   run the app:');
         console.log('     $ DEBUG=' + program.init + ' ./bin/www');
         console.log();
+        console.log('   or:');
+        console.log('     $ caminte -s');
+        console.log();
     });
 
     mkdir(path, function() {
@@ -291,7 +299,9 @@ function createApplicationAt(path) {
                 'debug': '~0.7.4'
             }
         };
-
+        
+        pkg.dependencies[program.adapter] = '*';
+        
         switch (program.template) {
             case 'jade':
                 pkg.dependencies['jade'] = '~1.3.0';
@@ -326,6 +336,41 @@ function createApplicationAt(path) {
             write(path + '/bin/www', www, 0755);
         });
         mkdir(path + '/config', function() {
+            var dbPort = 3306, dbBase = 'test';
+            switch(program.adapter) {
+                case 'redis':
+                    dbPort = 6379;
+                    break;
+                case 'nano':
+                case 'couchdb':
+                    dbPort = 5984;
+                    break;
+                case 'postgres':
+                    dbPort = 5432;
+                    break;
+                case 'rethinkdb':
+                    dbPort = 28015;
+                    break;
+                case 'mongo':
+                case 'mongodb':
+                case 'mongoose':
+                    dbPort = 27017;
+                    break;
+                case 'tingodb':
+                    dbPort = 0;
+                    dbBase = './dbt/test';
+                    mkdir(path + '/dbt');
+                    break;
+                case 'sqlite3':
+                    dbPort = 0;
+                    dbBase = './dbs/test.sqlite';
+                    mkdir(path + '/dbs');
+                    break;
+            }
+            cfg = cfg.replace('{driver}', program.adapter);
+            cfg = cfg.replace('{port}', dbPort);
+            cfg = cfg.replace('{database}', dbBase);
+            
             write(path + '/config/index.js', cfg, 0755);
         });
     });

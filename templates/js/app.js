@@ -31,7 +31,7 @@ try {
             console.log(err);
         }
         if (!files || files.length === 0) {
-            console.log("models files does not found");
+            if(config.debug) console.log("models files does not found");
             app.emit('models_loaded');
         } else {
             var count = files.length;
@@ -42,20 +42,15 @@ try {
                     bootModel(app, schema, file);
                     if (--count === 0) {
                         if ('function' === typeof schema.autoupdate && config.autoupdate) {
-                            if (!process.env.AUTOUPDATE) {
                                 schema.autoupdate(function(err) {
-                                    console.log('caminte autoupdate database!');
-                                    process.env.AUTOUPDATE = true;
+                                    if (config.debug) console.log('caminte autoupdate database!');
                                     if (err) {
                                         console.log(err);
                                     }
                                 });
-                            }
                         }
                         app.emit('models_loaded');
-                        if (config.debug) {
-                            console.log('caminte models loaded');
-                        }
+                        if (config.debug) console.log('caminte models loaded');
                     }
                 });
             }
@@ -83,7 +78,8 @@ app.on('models_loaded', function() {
     app.use(cookieParser());{css}
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(app.router);
-
+    
+    // routes
     app.get('/', routes.index);
     app.get('/:table.:format?', checkReqType, checkParams, rest.index);
     app.get('/:table/:id.:format?', checkReqType, checkParams, rest.show);
@@ -97,7 +93,6 @@ app.on('models_loaded', function() {
         err.status = 404;
         next(err);
     });
-
 
     // error handlers
     // development error handler
@@ -113,9 +108,17 @@ app.on('models_loaded', function() {
     app.use(function(err, req, res, next) {
         res[req.format](err.code, { error : err.message });
     });
+    app.emit('configured');
+    if (config.debug) console.log('caminte application configured');
 });
 
-// simplistic model support
+/**
+ * Simplistic model support.
+ *
+ * @param {Object} app
+ * @param {Object} schema
+ * @param {String} file
+ */
 function bootModel(app, schema, file) {
     if (/\.js$/i.test(file)) {
         var name = file.replace(/\.js$/i, '');

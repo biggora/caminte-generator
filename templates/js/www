@@ -6,5 +6,6 @@ var app = require('../app');
 app.set('port', process.env.PORT || config.port);
 
 var server = app.listen(app.get('port'), function() {
-  debug('Caminte server listening on port ' + server.address().port);
+  debug('Caminte listening on port ' + server.address().port);
+  if(config.debug) console.log('Caminte server listening on port ' + server.address().port);
 });

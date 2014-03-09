@@ -11,11 +11,11 @@ module.exports = {
     debug : true,
     autoupdate : true,
     db: {
-        driver: "mysql",
+        driver: "{driver}",
         host: "127.0.0.1",
-        port: "3306",
-        username: "test",
-        password: "test",
-        database: "test" //, pool : true
+        port: "{port}",
+        // username: "test",
+        // password: "test",
+        database: "{database}" //, pool : true
     }
 };

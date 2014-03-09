@@ -2,6 +2,28 @@
 
   Fast, unopinionated, minimalist restful server for [node](http://nodejs.org).
 
+### CaminteJS db adapters:
+    mysql, sqlite3, riak, postgres, couchdb, mongodb, redis, rethinkdb, tingodb
+
+<table>
+    <tr>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/memory.png"/></td>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/mongodb.png"/></td>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/mysql.png"/></td>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/postgresql.png"/></td>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/sqlite.png"/></td>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/mariadb.png"/></td>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/firebird.png"/></td>   
+    </tr>
+    <tr>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/couchdb.png"/></td>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/rethinkdb.png"/></td>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/redis.png"/></td> 
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/tingodb.png"/></td>      
+      <td colspan="3"></td>
+    </tr>
+</table>
+
 ## Installation
 
     $ npm install -g caminte-generator
@@ -13,20 +35,85 @@
  Create the app:
 
     $ npm install -g caminte-generator
-    $ caminte -i foo && cd ./foo
+    $ caminte -i test && cd ./test
 
  Install dependencies:
 
     $ npm install
 
+ Edit `./config/index.js` file, to configure the connection to the database server.
+
  Create model:
 
     $ caminte -g User name email password desciption:text created:date
 
-## Dependencies
+ Run server:
 
-- [Express 3.x](http://expressjs.com/).
-- [Caminte](http://www.camintejs.com/).
+    $ caminte -s
+
+### Usage
+
+    $ caminte [options] [dir]
+
+### Options
+
+    -h, --help                  output usage information
+    -V, --version               output the version number
+    -i, --init <appname>        create caminte application
+    -g, --generate <modelname]  generate data model
+    -s, --server                runs caminte server
+    -a, --adapter               database adapter (mysql|redis|etc...)
+    -j, --jade                  add jade engine support (defaults to ejs)
+    -H, --hogan                 add hogan.js engine support
+    -c, --css <engine>          add css <engine> support (less|stylus|compass) (defaults to plain css)
+    -f, --force                 force on non-empty directory
+
+### Examples
+
+    # create new restful application
+    $ caminte -i Test -a mysql -j
+
+    # create model
+    $ caminte -g Post active:bool name:string desc:text created:date
+
+### Routes
+
+will provide the following routes:
+
+    method        route                    action 
+    ------------------------------------------------------------
+    GET           /:table                  index      
+    GET           /:table/:id              show       
+    POST          /:table                  create     
+    DELETE        /:table/:id              destroy    
+    PUT           /:table/:id              update     
+    DELETE        /:table                  destroyall  
+
+### Directory structure
+
+On initialization directories tree generated, like that:
+
+    .
+    |-- bin
+    |   `-- www
+    |-- config
+    |   `-- index.js
+    |-- lib
+    |   |-- inflection.js
+    |   |-- tools.js
+    |   `-- xml.js
+    |-- models
+    |   `-- User.js
+    |-- public
+    |   |-- css
+    |   |   `-- ...
+    |   |-- js
+    |   |   `-- ...
+    |   `-- img
+    |       `-- ...
+    |-- app.js
+    `-- package.json
+
 
 ### Recommend extensions
 
