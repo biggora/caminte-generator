@@ -159,7 +159,10 @@ function XMLResponse(req, res, next) {
  */
 function checkReqType(req, res, next) {
     var format = req.params.format || 'json';
-    req.format = Tools.reqType('xml',req.accepted)? 'xml' : format.toString();
+    req.format = Tools.reqType('xml', req.accepted)? 'xml' : format.toString();
+    if(req.params.format) {
+        req.format = format;
+    }
     if (req.format === 'json' || req.format === 'xml') {
         next();
     } else {
