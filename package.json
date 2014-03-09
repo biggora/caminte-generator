@@ -13,7 +13,7 @@
     }
   ],
   "dependencies": {
-    "commander": "~1.3.2",
+    "commander": "~2.1.0",
     "mkdirp": "~0.3.5"
   },
   "keywords": [
