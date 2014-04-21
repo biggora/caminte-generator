@@ -2,7 +2,7 @@
   "name": "caminte-generator",
   "description": "RestFul application generator based on CaminteJS ORM",
   "homepage": "http://camintejs.com/",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": {
     "name": "Aleksej Gordejev",
     "email": "aleksej@gordejev.lv"
@@ -48,7 +48,7 @@
     "cjs": "./bin/caminte.js"
   },
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.10.0"
   },
   "bugs": {
     "url": "https://github.com/biggora/caminte-generator/issues"

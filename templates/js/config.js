@@ -17,5 +17,10 @@ module.exports = {
         // username: "test",
         // password: "test",
         database: "{database}" //, pool : true
+    },
+    parser: {
+        encoding: "utf-8",
+        keepExtensions: true,
+        uploadDir: __dirname + '/../uploads'
     }
 };

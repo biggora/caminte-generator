@@ -15,6 +15,8 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multiparty = require('connect-multiparty');
+var methodOverride = require('method-override');
 var config = require('./config');
 var inflection = require('./lib/inflection');
 var Tools = require('./lib/tools');
@@ -75,9 +77,14 @@ app.on('models_loaded', function() {
     app.use(XMLResponse);
     app.use(bodyParser.json({reviver:true}));
     app.use(bodyParser.urlencoded());
+    app.use(methodOverride()); 
+    app.use(multiparty({
+        uploadDir: config.parser.uploadDir,
+        keepExtensions: config.parser.keepExtensions,
+        encoding: config.parser.encoding
+    }));
     app.use(cookieParser());{css}
     app.use(express.static(path.join(__dirname, 'public')));
-    app.use(app.router);
     
     // routes
     app.get('/', routes.index);

@@ -288,13 +288,15 @@ function createApplicationAt(path) {
             , private: true
             , scripts: {start: 'node ./bin/www'}
             , dependencies: {
-                'caminte': '~0.0.14',
-                'express': '~3.4.8',
-                'static-favicon': '~1.0.0',
-                'morgan': '~1.0.0',
-                'cookie-parser': '~1.0.1',
-                'body-parser': '~1.0.0',
-                'debug': '~0.7.4'
+                'caminte': '>=0.0.14',
+                'express': '>=4.0.0',
+                'static-favicon': '>=1.0.0',
+                'morgan': '>=1.0.0',
+                'cookie-parser': '>=1.0.0',
+                'body-parser': '>=1.0.0',
+                'method-override': '*',
+                'connect-multiparty': '>=1.0.0',
+                'debug': '>=0.7.4'
             }
         };
         
@@ -333,6 +335,7 @@ function createApplicationAt(path) {
             www = www.replace('{app}', program.init);
             write(path + '/bin/www', www, 0755);
         });
+        mkdir(path + '/uploads');
         mkdir(path + '/config', function() {
             var dbPort = 3306, dbBase = 'test';
             switch(program.adapter) {
