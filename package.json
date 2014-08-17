@@ -2,7 +2,7 @@
   "name": "caminte-generator",
   "description": "RestFul application generator based on CaminteJS ORM",
   "homepage": "http://camintejs.com/",
-  "version": "0.0.7",
+  "version": "0.0.7-1",
   "author": {
     "name": "Aleksej Gordejev",
     "email": "aleksej@gordejev.lv"
@@ -14,8 +14,8 @@
     }
   ],
   "dependencies": {
-    "commander": "~2.1.0",
-    "mkdirp": "~0.3.5"
+    "commander": "~2.3.0",
+    "mkdirp": "~0.5.0"
   },
   "keywords": [
     "caminte",
