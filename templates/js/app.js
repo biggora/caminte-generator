@@ -74,14 +74,25 @@ app.on('models_loaded', function() {
 
     app.use(favicon());
     app.use(logger('dev'));
-    app.use(XMLResponse);
-    app.use(bodyParser.json({reviver:true}));
-    app.use(bodyParser.urlencoded());
-    app.use(methodOverride()); 
     app.use(multiparty({
         uploadDir: config.parser.uploadDir,
         keepExtensions: config.parser.keepExtensions,
         encoding: config.parser.encoding
+    }));
+    app.use(XMLResponse);
+    app.use(bodyParser.json({reviver:true}));
+    app.use(bodyParser.urlencoded());
+    app.use(methodOverride('X-HTTP-Method'));              // Microsoft
+    app.use(methodOverride('X-HTTP-Method-Override'));     // Google/GData
+    app.use(methodOverride('X-Method-Override'));          // IBM
+    app.use(methodOverride('_method')); 	           // simulate DELETE and PUT
+    app.use(methodOverride(function(req, res){
+        if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+            // look in urlencoded POST bodies and delete it
+            var method = req.body._method;
+            delete req.body._method;
+            return method;
+        }
     }));
     app.use(cookieParser());{css}
     app.use(express.static(path.join(__dirname, 'public')));

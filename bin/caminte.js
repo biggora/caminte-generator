@@ -288,13 +288,13 @@ function createApplicationAt(path) {
             , private: true
             , scripts: {start: 'node ./bin/www'}
             , dependencies: {
-                'caminte': '>=0.0.14',
+                'caminte': '>=0.0.21',
                 'express': '>=4.0.0',
                 'static-favicon': '>=1.0.0',
-                'morgan': '>=1.0.0',
-                'cookie-parser': '>=1.0.0',
-                'body-parser': '>=1.0.0',
-                'method-override': '*',
+                'morgan': '>=1.2.0',
+                'cookie-parser': '>=1.3.0',
+                'body-parser': '>=1.6.0',
+                'method-override': '>=2.1.3',
                 'connect-multiparty': '>=1.0.0',
                 'debug': '>=0.7.4'
             }
@@ -307,7 +307,7 @@ function createApplicationAt(path) {
                 pkg.dependencies['jade'] = '~1.3.0';
                 break;
             case 'ejs':
-                pkg.dependencies['ejs'] = '~0.8.5';
+                pkg.dependencies['ejs'] = '~1.0.0';
                 break;
             case 'hjs':
                 pkg.dependencies['hjs'] = '~0.0.6';
