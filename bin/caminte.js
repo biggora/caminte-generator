@@ -293,7 +293,7 @@ function createApplicationAt(path) {
             , dependencies: {
                 'caminte': '>=0.0.21',
                 'express': '>=4.0.0',
-                'static-favicon': '>=1.0.0',
+                'serve-favicon': '>=2.0.0',
                 'morgan': '>=1.2.0',
                 'cookie-parser': '>=1.3.0',
                 'body-parser': '>=1.6.0',
