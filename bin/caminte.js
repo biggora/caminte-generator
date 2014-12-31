@@ -44,6 +44,7 @@ program.template = 'ejs';
 if (program.jade) {
     program.template = 'jade';
 }
+
 if (program.hogan) {
     program.template = 'hjs';
 }
@@ -215,7 +216,9 @@ function createApplicationAt(path) {
 
     mkdir(path, function() {
         mkdir(path + '/models');
-        mkdir(path + '/public');
+        mkdir(path + '/public', function() {
+            copy(__dirname + '/../templates/favicon.ico', path + '/public/favicon.ico');
+        });
         mkdir(path + '/public/js');
         mkdir(path + '/public/img');
         mkdir(path + '/public/css', function() {
@@ -375,6 +378,10 @@ function createApplicationAt(path) {
             write(path + '/config/index.js', cfg, 0755);
         });
     });
+}
+
+function copy(from, to) {
+    fs.writeFileSync(to, fs.readFileSync(from));
 }
 
 function copy_template(from, to) {

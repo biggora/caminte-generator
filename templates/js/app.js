@@ -11,7 +11,7 @@ var caminte = require('caminte');
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
-var favicon = require('static-favicon');
+var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -72,7 +72,7 @@ app.on('models_loaded', function() {
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', '{views}');
 
-    app.use(favicon());
+    app.use(favicon(__dirname + '/public/favicon.ico'));
     app.use(logger('dev'));
     app.use(multiparty({
         uploadDir: config.parser.uploadDir,
@@ -80,8 +80,8 @@ app.on('models_loaded', function() {
         encoding: config.parser.encoding
     }));
     app.use(XMLResponse);
+    app.use(bodyParser.urlencoded({ extended: false }))
     app.use(bodyParser.json({reviver:true}));
-    app.use(bodyParser.urlencoded());
     app.use(methodOverride('X-HTTP-Method'));              // Microsoft
     app.use(methodOverride('X-HTTP-Method-Override'));     // Google/GData
     app.use(methodOverride('X-Method-Override'));          // IBM
@@ -103,8 +103,8 @@ app.on('models_loaded', function() {
     app.get('/:table/:id.:format?', checkReqType, checkParams, rest.show);
     app.post('/:table.:format?', checkReqType, checkParams, rest.create);
     app.put('/:table/:id.:format?', checkReqType, checkParams, rest.update);
-    app.del('/:table/:id.:format?', checkReqType, checkParams, rest.destroy);
-    app.del('/:table.:format?', checkReqType, checkParams, rest.destroyall);
+    app.delete('/:table/:id.:format?', checkReqType, checkParams, rest.destroy);
+    app.delete('/:table.:format?', checkReqType, checkParams, rest.destroyall);
 
     // catch 404 and forwarding to error handler
     app.use(function(req, res, next) {
