@@ -14,8 +14,8 @@
     }
   ],
   "dependencies": {
-    "commander": "~2.3.0",
-    "mkdirp": "~0.5.0"
+    "commander": "^2.3.0",
+    "mkdirp": "^0.5.0"
   },
   "keywords": [
     "caminte",
