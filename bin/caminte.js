@@ -17,17 +17,17 @@ function list(val) {
 // CLI
 
 program
-        .version(version)
-        .usage('[options] [dir]')
-        .option('-i, --init <appname>', 'create caminte application')
-        .option('-g, --generate <modelname]', 'generate data model')
-        .option('-s, --server', 'runs caminte server')
-        .option('-a, --adapter', 'database adapter (mysql|redis|etc...)')
-        .option('-j, --jade', 'add jade engine support (defaults to ejs)')
-        .option('-H, --hogan', 'add hogan.js engine support')
-        .option('-c, --css <engine>', 'add css <engine> support (less|stylus|compass) (defaults to plain css)')
-        .option('-f, --force', 'force on non-empty directory')
-        .parse(process.argv);
+    .version(version)
+    .usage('[options] [dir]')
+    .option('-i, --init <appname>', 'create caminte application')
+    .option('-g, --generate <modelname]', 'generate data model')
+    .option('-s, --server', 'runs caminte server')
+    .option('-a, --adapter', 'database adapter (mysql|redis|etc...)')
+    .option('-j, --jade', 'add jade engine support (defaults to ejs)')
+    .option('-H, --hogan', 'add hogan.js engine support')
+    .option('-c, --css <engine>', 'add css <engine> support (less|stylus|compass) (defaults to plain css)')
+    .option('-f, --force', 'force on non-empty directory')
+    .parse(process.argv);
 
 // Path
 
@@ -49,8 +49,8 @@ if (program.hogan) {
     program.template = 'hjs';
 }
 
-if(!program.adapter) {
-    program.adapter = 'mysql';
+if (!program.adapter) {
+    program.adapter = 'sqlite3';
 }
 
 if (!program.init && !program.generate && !program.server) {
@@ -94,11 +94,11 @@ var xml = fs.readFileSync(__dirname + '/../templates/js/lib/xml.js', 'utf-8');
 
 // Generate application
 function createApplication(path) {
-    emptyDirectory(path, function(empty) {
+    emptyDirectory(path, function (empty) {
         if (empty || program.force) {
             createApplicationAt(path);
         } else {
-            program.confirm('destination is not empty, continue? ', function(ok) {
+            program.confirm('destination is not empty, continue? ', function (ok) {
                 if (ok) {
                     process.stdin.destroy();
                     createApplicationAt(path);
@@ -114,11 +114,11 @@ function createApplication(path) {
 function createModel(root) {
     var modelName = program.generate.toLowerCase().capitalize();
     var pathToModel = path.resolve(root + '/' + modelName + '.js');
-    existsFile(pathToModel, function(empty) {
+    existsFile(pathToModel, function (empty) {
         if (!empty || program.force) {
             createModelAt(root, modelName);
         } else {
-            program.confirm('model is exists, continue? ', function(ok) {
+            program.confirm('model is exists, continue? ', function (ok) {
                 if (ok) {
                     process.stdin.destroy();
                     createModelAt(root, modelName);
@@ -201,7 +201,7 @@ function parseFields() {
  */
 function createApplicationAt(path) {
     console.log();
-    process.on('exit', function() {
+    process.on('exit', function () {
         console.log();
         console.log('   install dependencies:');
         console.log('     $ cd %s && npm install', path);
@@ -214,14 +214,14 @@ function createApplicationAt(path) {
         console.log();
     });
 
-    mkdir(path, function() {
+    mkdir(path, function () {
         mkdir(path + '/models');
-        mkdir(path + '/public', function() {
+        mkdir(path + '/public', function () {
             copy(__dirname + '/../templates/favicon.ico', path + '/public/favicon.ico');
         });
         mkdir(path + '/public/js');
         mkdir(path + '/public/img');
-        mkdir(path + '/public/css', function() {
+        mkdir(path + '/public/css', function () {
             switch (program.css) {
                 case 'less':
                     write(path + '/public/css/style.less', less);
@@ -237,18 +237,18 @@ function createApplicationAt(path) {
             }
         });
 
-        mkdir(path + '/routes', function() {
+        mkdir(path + '/routes', function () {
             write(path + '/routes/index.js', index);
             write(path + '/routes/rest.js', rest);
         });
 
-        mkdir(path + '/lib', function() {
+        mkdir(path + '/lib', function () {
             write(path + '/lib/inflection.js', inflect);
             write(path + '/lib/tools.js', tools);
             write(path + '/lib/xml.js', xml);
         });
 
-        mkdir(path + '/views', function() {
+        mkdir(path + '/views', function () {
             switch (program.template) {
                 case 'ejs':
                     copy_template('ejs/index.ejs', path + '/views/index.ejs');
@@ -302,9 +302,9 @@ function createApplicationAt(path) {
                 'debug': '>=0.7.4'
             }
         };
-        
+
         pkg.dependencies[program.adapter] = '*';
-        
+
         switch (program.template) {
             case 'jade':
                 pkg.dependencies['jade'] = '~1.3.0';
@@ -334,14 +334,14 @@ function createApplicationAt(path) {
 
         write(path + '/package.json', JSON.stringify(pkg, null, 2));
         write(path + '/app.js', app);
-        mkdir(path + '/bin', function() {
+        mkdir(path + '/bin', function () {
             www = www.replace('{app}', program.init);
             write(path + '/bin/www', www, 0755);
         });
         mkdir(path + '/uploads');
-        mkdir(path + '/config', function() {
+        mkdir(path + '/config', function () {
             var dbPort = 3306, dbBase = 'test';
-            switch(program.adapter) {
+            switch (program.adapter) {
                 case 'redis':
                     dbPort = 6379;
                     break;
@@ -374,7 +374,7 @@ function createApplicationAt(path) {
             cfg = cfg.replace('{driver}', program.adapter);
             cfg = cfg.replace('{port}', dbPort);
             cfg = cfg.replace('{database}', dbBase);
-            
+
             write(path + '/config/index.js', cfg, 0755);
         });
     });
@@ -396,7 +396,7 @@ function copy_template(from, to) {
  * @param {Function} fn
  */
 function emptyDirectory(path, fn) {
-    fs.readdir(path, function(err, files) {
+    fs.readdir(path, function (err, files) {
         if (err && 'ENOENT' !== err.code)
             throw err;
         fn(!files || !files.length);
@@ -410,7 +410,7 @@ function emptyDirectory(path, fn) {
  * @param {Function} fn
  */
 function existsFile(path, fn) {
-    fs.exists(path, function(exists) {
+    fs.exists(path, function (exists) {
         fn(exists);
     });
 }
@@ -434,9 +434,10 @@ function write(path, str, mode) {
  * @param {Function} fn
  */
 function mkdir(path, fn) {
-    mkdirp(path, 0755, function(err) {
-        if (err)
+    mkdirp(path, 0755, function (err) {
+        if (err) {
             throw err;
+        }
         console.log('   \033[36mcreate\033[0m : ' + path);
         fn && fn();
     });

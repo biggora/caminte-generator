@@ -80,12 +80,12 @@ app.on('models_loaded', function() {
         encoding: config.parser.encoding
     }));
     app.use(XMLResponse);
-    app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json({reviver:true}));
     app.use(methodOverride('X-HTTP-Method'));              // Microsoft
     app.use(methodOverride('X-HTTP-Method-Override'));     // Google/GData
     app.use(methodOverride('X-Method-Override'));          // IBM
-    app.use(methodOverride('_method')); 	           // simulate DELETE and PUT
+    app.use(methodOverride('_method')); 	               // simulate DELETE and PUT
     app.use(methodOverride(function(req, res){
         if (req.body && typeof req.body === 'object' && '_method' in req.body) {
             // look in urlencoded POST bodies and delete it
@@ -118,7 +118,7 @@ app.on('models_loaded', function() {
     // will print stacktrace
     if (app.get('env') === 'development') {
         app.use(function(err, req, res, next) {
-            res[req.format || 'json'](err.code || 400, { error : err });
+            res.status(err.code || 400)[req.format || 'json']({ error : err });
         });
     }
 
@@ -163,7 +163,7 @@ function XMLResponse(req, res, next) {
         }
         var header = (params || {}).header ? params.header : "application/xml";
         res.setHeader("Content-Type", header);
-        res.send(code, XML(data, {xmlHeader: {standalone: true}}));
+        res.status(code).send(XML(data, {xmlHeader: {standalone: true}}));
     };
     next();
 }
@@ -184,7 +184,7 @@ function checkReqType(req, res, next) {
     if (req.format === 'json' || req.format === 'xml') {
         next();
     } else {
-        res.send(404, { error : 'unsupported format' });
+        res.status(404).send({ error : 'unsupported format' });
     }
 }
 
@@ -204,10 +204,10 @@ function checkParams(req, res, next) {
             req.model = req.app.models[table];
             next();
         } else {
-            res[req.format](404, { error : 'collection ' + req.params.table + ' undefined' });
+            res.status(404)[req.format]({ error : 'collection ' + req.params.table + ' undefined' });
         }
     } else {
-        res[req.format](404, { error : 'first specify the collection' });
+        res.status(404)[req.format]({ error : 'first specify the collection' });
     }
 }
 

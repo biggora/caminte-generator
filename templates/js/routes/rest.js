@@ -112,7 +112,7 @@ module.exports = {
                     validate: true
                 }, function(err, filtered) {
                     if (err && err.length) {
-                        res[req.format.toString()](400, {
+                        res.status(400)[req.format.toString()]({
                             error: err
                         });
                     } else {
@@ -126,7 +126,7 @@ module.exports = {
                     }
                 });
             } else {
-                res[req.format.toString()](404, {error: 'Not Found.'});
+                res.status(404)[req.format.toString()]({error: 'Not Found.'});
             }
         });
     },
@@ -146,7 +146,7 @@ module.exports = {
                     validate: true
                 }, function(err, filtered) {
                     if (err) {
-                        res[req.format.toString()](400, {
+                        res.status(400)[req.format.toString()]({
                             error: err
                         });
                         return false;
@@ -168,7 +168,7 @@ module.exports = {
                     });
                 });
             } else {
-                res[req.format.toString()](404, {error: 'Not Found.'});
+                res.status(404)[req.format.toString()]({error: 'Not Found.'});
             }
         });
     },
@@ -186,7 +186,7 @@ module.exports = {
             validate: true
         }, function(err, filtered) {
             if (err) {
-                res[req.format.toString()](400, {
+                res.status(400)[req.format.toString()]({
                     error: err
                 });
                 return false;
@@ -195,17 +195,17 @@ module.exports = {
 
             item.save(function(err) {
                 if (err) {
-                    res[req.format.toString()](400, {
+                    res.status(400)[req.format.toString()]({
                         error: err
                     });
                     return false;
                 }
                 switch (req.format.toString()) {
                     case 'xml':
-                        res.xml(201, {root: {item: item.toObject()}});
+                        res.status(201).xml({root: {item: item.toObject()}});
                         break;
                     default:
-                        res.json(201, item.toObject());
+                        res.status(201).json(item.toObject());
                 }
             });
         });
@@ -222,14 +222,14 @@ module.exports = {
         var Model = req.model;
         Model.findById(req.params.id, function(err, item) {
             if (!item) {
-                res[req.format.toString()](400, {error: 'Unable to locate the item to delete!'});
+                res.status(400)[req.format.toString()]({error: 'Unable to locate the item to delete!'});
                 return false;
             }
             item.destroy(function(err) {
                 if (err) {
-                    res[req.format.toString()](400, {error: 'There was an error deleting! ' + err.join(', \n')});
+                    res.status(400)[req.format.toString()]({error: 'There was an error deleting! ' + err.join(', \n')});
                 } else {
-                    res[req.format.toString()](204, {message: 'Item deleted!'});
+                    res.status(204)[req.format.toString()]({message: 'Item deleted!'});
                 }
             });
         });
