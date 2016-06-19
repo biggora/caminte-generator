@@ -130,7 +130,7 @@ app.on('models_loaded', function() {
     // production error handler
     // no stacktraces leaked to user
     app.use(function(err, req, res, next) {
-        res[req.format || 'json'](err.code || 400, { error : err.message });
+        res.status(err.code || 400)[req.format || 'json']({ error : err.message });
     });
     app.emit('configured');
     if (config.debug) console.log('caminte application configured');

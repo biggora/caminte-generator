@@ -6,7 +6,7 @@ var request = require('supertest');
 var chai = require('chai');
 var expect = chai.expect;
 var app = require('../../app');
-var id, item;
+var id, item, updated, list;
 
 describe('Routes for {name}:', function () {
 
@@ -22,7 +22,8 @@ describe('Routes for {name}:', function () {
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);
-
+                list = res.body;
+                expect(list.items).to.have.lengthOf(0);
                 done();
             });
     });
@@ -35,43 +36,58 @@ describe('Routes for {name}:', function () {
             .expect(201)
             .end(function (err, res) {
                 if (err) return done(err);
+                expect(res).to.have.property('body');
                 item = res.body;
-                console.log(res, item)
+                expect(item).to.have.property('id');
+                expect(item.id).to.exist;
+                id = item.id;
                 done();
             });
     });
 
-    it('#show GET /{prefix}/{namePluralized}/' + item.id, function (done) {
+    it('#show GET /{prefix}/{namePluralized}/:id', function (done) {
         request(app)
-            .get('/{prefix}/{namePluralized}/' + item.id)
+            .get('/{prefix}/{namePluralized}/' + id)
             .set('Accept', 'application/json')
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);
-
+                expect(res).to.have.property('body');
+                item = res.body;
+                expect(item).to.have.property('id');
+                expect(item.id).to.exist;
                 done();
             });
     });
 
-    it('#update PUT /{prefix}/{namePluralized}/' + item.id, function (done) {
+    it('#update PUT /{prefix}/{namePluralized}/:id', function (done) {
         request(app)
-            .put('/{prefix}/{namePluralized}/' + item.id)
+            .put('/{prefix}/{namePluralized}/' + id)
             .set('Accept', 'application/json')
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);
-
+                expect(res).to.have.property('body');
+                updated = res.body;
+                expect(updated).to.have.property('id');
+                expect(updated.id).to.exist;
                 done();
             });
     });
 
-
-    describe('#destroy', function () {
-
-    });
-
-    describe('#destroyall', function () {
-
+    it('#destroy DEL /{prefix}/{namePluralized}/:id', function (done) {
+        request(app)
+            .delete('/{prefix}/{namePluralized}/' + id)
+            .set('Accept', 'application/json')
+            .expect(204)
+            .end(function (err, res) {
+                if (err) return done(err);
+                expect(res).to.have.property('body');
+                updated = res.body;
+                expect(updated).to.have.not.property('id');
+                expect(updated.id).to.not.exist;
+                done();
+            });
     });
 
 });
