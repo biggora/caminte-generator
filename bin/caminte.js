@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var program = require('commander');
+var program = require('commander-plus');
 var mkdirp = require('mkdirp');
 var os = require('os');
 var fs = require('fs');
@@ -63,7 +63,6 @@ if (!program.init && !program.generate && !program.server) {
     var fields = parseFields();
     program.generate = program.generate.toLowerCase().singularize();
     createModel(destination_path + 'models', fields);
-    createTest(destination_path + 'test', fields);
 } else if (program.server) {
     destination_path += 'bin/www';
     if (fs.existsSync(destination_path)) {
@@ -119,11 +118,13 @@ function createModel(root, fields) {
     existsFile(pathToModel, function (empty) {
         if (!empty || program.force) {
             createModelAt(root, modelName, fields);
+            createTest(destination_path + 'test', fields);
         } else {
-            program.confirm('model is exists, continue? ', function (ok) {
+            program.confirm('model is exists, continue to overwrite? ', function (ok) {
                 if (ok) {
-                    process.stdin.destroy();
                     createModelAt(root, modelName, fields);
+                    createTest(destination_path + 'test', fields);
+                    // process.stdin.destroy();
                 } else {
                     abort('aborting');
                 }
@@ -140,7 +141,7 @@ function createTest(root, fields) {
         if (!empty || program.force) {
             createTestAt(root, modelName, fields);
         } else {
-            program.confirm('test is exists, continue? ', function (ok) {
+            program.confirm('tests are exists, continue to overwrite? ', function (ok) {
                 if (ok) {
                     process.stdin.destroy();
                     createTestAt(root, modelName, fields);
