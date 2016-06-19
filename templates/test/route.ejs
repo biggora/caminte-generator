@@ -1,0 +1,73 @@
+/**
+ *  {name} Route Test
+ *  Created by create-test script
+ **/
+var request = require('supertest');
+var chai = require('chai');
+var expect = chai.expect;
+var app = require('../../app');
+var id, item;
+
+describe('Routes for {name}:', function () {
+
+    before(function () {
+        app.listen(3000);
+    });
+
+    describe('#index GET /{prefix}/{namePluralized}', function () {
+        it('respond with json', function (done) {
+            request(app)
+                .get('/{prefix}/{namePluralized}')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+        it('respond with xml', function (done) {
+            request(app)
+                .get('/{prefix}/{namePluralized}.xml')
+                .expect('Content-Type', /xml/)
+                .expect(200, done);
+        });
+    });
+
+    describe('#create POST /{prefix}/{namePluralized}', function () {
+        it('respond with html', function (done) {
+            request(app)
+                .post('/{prefix}/{namePluralized}')
+                .field('name', 'my awesome avatar')
+                .set('Accept', 'application/json')
+                .expect(201)
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+    });
+
+    describe('#show GET /{prefix}/{namePluralized}/', function () {
+        it('respond with html', function (done) {
+            request(app)
+                .get('/{prefix}/{namePluralized}')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) return done(err);
+
+                    done();
+                });
+        });
+    });
+
+    describe('#update', function () {
+
+    });
+
+    describe('#destroy', function () {
+
+    });
+
+    describe('#destroyall', function () {
+
+    });
+
+});

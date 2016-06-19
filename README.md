@@ -22,7 +22,9 @@
       <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/rethinkdb.png"/></td>
       <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/redis.png"/></td> 
       <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/tingodb.png"/></td>      
-      <td colspan="3"></td>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/neo4j.png"/></td> 
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/arangodb.png"/></td>
+      <td><img width="100" src="https://github.com/biggora/caminte/raw/master/media/cassandra.png"/></td>
     </tr>
 </table>
 
@@ -57,31 +59,31 @@
 
  Create User:
 
-    $ curl -X POST http://localhost:3000/users -i -H "Content-type: application/json" -d "{\"name\":\"Alex Gora\",\"created\":\"2014-01-01\"}"
+    $ curl -X POST http://localhost:3000/v1/users -i -H "Content-type: application/json" -d "{\"name\":\"Alex Gora\",\"created\":\"2014-01-01\"}"
     # or
-    $ curl -X POST http://localhost:3000/users -i -d "name=Alex%20Gora&created=2014-01-01"
+    $ curl -X POST http://localhost:3000/v1/users -i -d "name=Alex%20Gora&created=2014-01-01"
  
  Update User:
  
-    $ curl -X PUT http://localhost:3000/users/1 -i -H "Content-type: application/json" -d "{\"pass\":\"6r87uyfGFTg\",\"email\":\"example@example.com\"}"
+    $ curl -X PUT http://localhost:3000/v1/users/1 -i -H "Content-type: application/json" -d "{\"pass\":\"6r87uyfGFTg\",\"email\":\"example@example.com\"}"
     # or
-    $ curl -X PUT http://localhost:3000/users/1 -i -d "pass=6r87uyfGFTg&email=example@example.com"
+    $ curl -X PUT http://localhost:3000/v1/users/1 -i -d "pass=6r87uyfGFTg&email=example@example.com"
 
  Get Users:
 
-    $ curl -X GET http://localhost:3000/users -i -H "Content-type: application/json" -d "{\"skip\":\"0\",\"limit\":\"10\",\"sort\":\"id:desc\"}" 
+    $ curl -X GET http://localhost:3000/v1/users -i -H "Content-type: application/json" -d "{\"skip\":\"0\",\"limit\":\"10\",\"sort\":\"id:desc\"}" 
     # or
-    $ curl -X GET http://localhost:3000/users -i -d "skip=0&limit=10&sort=id:desc" 
+    $ curl -X GET http://localhost:3000/v1/users -i -d "skip=0&limit=10&sort=id:desc" 
 
  Delete User:
 
-    $ curl -X DELETE http://localhost:3000/users/1 -i
+    $ curl -X DELETE http://localhost:3000/v1/users/1 -i
 
  Search:
     
-    $ curl -X GET http://localhost:3000/users -i -H "Content-type: application/json"  -d "{\"search\":\"name:alex\"}"
+    $ curl -X GET http://localhost:3000/v1/users -i -H "Content-type: application/json"  -d "{\"search\":\"name:alex\"}"
     # or
-    $ curl -X GET http://localhost:3000/users -i -d "search=name:alex" 
+    $ curl -X GET http://localhost:3000/v1/users -i -d "search=name:alex" 
 
 ### Usage
 
@@ -114,12 +116,12 @@ will provide the following routes:
 
     method        route                    action 
     ------------------------------------------------------------
-    GET           /:table                  index      
-    GET           /:table/:id              show       
-    POST          /:table                  create    
-    PUT           /:table/:id              update      
-    DELETE        /:table/:id              destroy    
-    DELETE        /:table                  destroyall  
+    GET           /v1/:table                  index      
+    GET           /v1/:table/:id              show       
+    POST          /v1/:table                  create    
+    PUT           /v1/:table/:id              update      
+    DELETE        /v1/:table/:id              destroy    
+    DELETE        /v1/:table                  destroyall  
 
 ### Directory structure
 
@@ -142,6 +144,13 @@ On initialization directories tree generated, like that:
     |   |-- js
     |   |   `-- ...
     |   `-- img
+    |       `-- ...
+    |-- test
+    |   |-- routes
+    |   |   `-- ...
+    |   |-- models
+    |   |   `-- ...
+    |   `-- units
     |       `-- ...
     |-- app.js
     `-- package.json

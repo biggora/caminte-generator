@@ -1,0 +1,331 @@
+/**
+*  {name} Model Test
+*  Created by create-test script @2016-01-02T17:30:54.830Z
+**/
+
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'test';
+}
+
+var chai = require('chai');
+var expect = chai.expect;
+var caminte = require('caminte');
+var config = require('../../config');
+var dbConf = config.db[process.env.NODE_ENV];
+var {name}Model = require('../../models/{name}');
+var Schema = caminte.Schema;
+dbConf.host = process.env.DB_HOST || dbConf.host;
+var schema = new Schema(dbConf.driver, dbConf);
+var {name} = {name}Model(schema);
+
+describe('Model {name}:', function () {
+    'use strict';
+    var {nameToLowerCase}, id;
+
+    before(function (done) {
+        schema.autoupdate(function () {
+            done();
+        });
+    });
+
+    after(function (done) {
+        {name}.destroyAll(function (err) {
+            done();
+        });
+    });
+
+    describe('properties methods:', function () {
+
+        it('#toString', function () {
+            expect({name}).to.have.property('toString');
+            expect({name}.toString).to.be.a('function');
+        });
+
+        it('#forEachProperty', function () {
+            expect({name}).to.have.property('forEachProperty');
+            expect({name}.forEachProperty).to.be.a('function');
+        });
+
+        it('#registerProperty', function () {
+            expect({name}).to.have.property('registerProperty');
+            expect({name}.registerProperty).to.be.a('function');
+        });
+
+    });
+
+    describe('scope methods:', function () {
+
+        it('#scope', function () {
+            expect({name}).to.have.property('scope');
+            expect({name}.scope).to.be.a('function');
+        });
+
+    });
+
+    describe('query api methods:', function () {
+
+        it('#create', function () {
+            expect({name}).to.have.property('create');
+            expect({name}.create).to.be.a('function');
+        });
+
+        it('#exists', function () {
+            expect({name}).to.have.property('exists');
+            expect({name}.exists).to.be.a('function');
+        });
+
+        it('#count', function () {
+            expect({name}).to.have.property('count');
+            expect({name}.count).to.be.a('function');
+        });
+
+        it('#findOrCreate', function () {
+            expect({name}).to.have.property('findOrCreate');
+            expect({name}.findOrCreate).to.be.a('function');
+        });
+
+        it('#findById', function () {
+            expect({name}).to.have.property('findById');
+            expect({name}.findById).to.be.a('function');
+        });
+
+        it('#findOne', function () {
+            expect({name}).to.have.property('findOne');
+            expect({name}.findOne).to.be.a('function');
+        });
+
+        it('#find', function () {
+            expect({name}).to.have.property('find');
+            expect({name}.find).to.be.a('function');
+        });
+
+        it('#all', function () {
+            expect({name}).to.have.property('all');
+            expect({name}.all).to.be.a('function');
+        });
+
+        it('#run', function () {
+            expect({name}).to.have.property('run');
+            expect({name}.run).to.be.a('function');
+        });
+
+        it('#exec', function () {
+            expect({name}).to.have.property('exec');
+            expect({name}.exec).to.be.a('function');
+        });
+
+        it('#update', function () {
+            expect({name}).to.have.property('update');
+            expect({name}.update).to.be.a('function');
+        });
+
+        it('#updateOrCreate', function () {
+            expect({name}).to.have.property('updateOrCreate');
+            expect({name}.updateOrCreate).to.be.a('function');
+        });
+
+        it('#upsert', function () {
+            expect({name}).to.have.property('upsert');
+            expect({name}.upsert).to.be.a('function');
+        });
+
+        it('#destroyAll', function () {
+            expect({name}).to.have.property('destroyAll');
+            expect({name}.destroyAll).to.be.a('function');
+        });
+
+        it('#destroyById', function () {
+            expect({name}).to.have.property('destroyById');
+            expect({name}.destroyById).to.be.a('function');
+        });
+
+        it('#remove', function () {
+            expect({name}).to.have.property('remove');
+            expect({name}.remove).to.be.a('function');
+        });
+
+    });
+
+    describe('relations methods:', function () {
+        it('#hasMany', function () {
+            expect({name}).to.have.property('hasMany');
+            expect({name}.hasMany).to.be.a('function');
+        });
+        it('#belongsTo', function () {
+            expect({name}).to.have.property('belongsTo');
+            expect({name}.belongsTo).to.be.a('function');
+        });
+    });
+
+    describe('validations methods:', function () {
+
+        it('#validate', function () {
+            expect({name}).to.have.property('validate');
+            expect({name}.validate).to.be.a('function');
+        });
+
+        it('#validatesPresenceOf', function () {
+            expect({name}).to.have.property('validatesPresenceOf');
+            expect({name}.validatesPresenceOf).to.be.a('function');
+        });
+
+        it('#validatesLengthOf', function () {
+            expect({name}).to.have.property('validatesLengthOf');
+            expect({name}.validatesLengthOf).to.be.a('function');
+        });
+
+        it('#validatesNumericalityOf', function () {
+            expect({name}).to.have.property('validatesNumericalityOf');
+            expect({name}.validatesNumericalityOf).to.be.a('function');
+        });
+
+        it('#validatesInclusionOf', function () {
+            expect({name}).to.have.property('validatesInclusionOf');
+            expect({name}.validatesInclusionOf).to.be.a('function');
+        });
+
+        it('#validatesInclusionOf', function () {
+            expect({name}).to.have.property('validatesInclusionOf');
+            expect({name}.validatesInclusionOf).to.be.a('function');
+        });
+
+        it('#validatesFormatOf', function () {
+            expect({name}).to.have.property('validatesFormatOf');
+            expect({name}.validatesFormatOf).to.be.a('function');
+        });
+
+        it('#validatesUniquenessOf', function () {
+            expect({name}).to.have.property('validatesUniquenessOf');
+            expect({name}.validatesUniquenessOf).to.be.a('function');
+        });
+
+        it('#validateAsync', function () {
+            expect({name}).to.have.property('validateAsync');
+            expect({name}.validateAsync).to.be.a('function');
+        });
+
+    });
+
+    describe('hook methods:', function () {
+
+        it('#afterInitialize', function () {
+            expect({name}).to.have.property('afterInitialize');
+        });
+
+        it('#beforeValidation', function () {
+            expect({name}).to.have.property('beforeValidation');
+        });
+
+        it('#afterValidation', function () {
+            expect({name}).to.have.property('afterValidation');
+        });
+
+        it('#beforeSave', function () {
+            expect({name}).to.have.property('beforeSave');
+        });
+
+        it('#afterSave', function () {
+            expect({name}).to.have.property('afterSave');
+        });
+
+        it('#beforeCreate', function () {
+            expect({name}).to.have.property('beforeCreate');
+        });
+
+        it('#afterCreate', function () {
+            expect({name}).to.have.property('afterCreate');
+        });
+
+        it('#beforeUpdate', function () {
+            expect({name}).to.have.property('beforeUpdate');
+        });
+
+        it('#afterUpdate', function () {
+            expect({name}).to.have.property('afterUpdate');
+        });
+
+        it('#beforeDestroy', function () {
+            expect({name}).to.have.property('beforeDestroy');
+        });
+
+        it('#afterDestroy', function () {
+            expect({name}).to.have.property('afterDestroy');
+        });
+    });
+
+    describe('model functionality:', function () {
+        it('#create', function (done) {
+            {name}.create(function (err, created) {
+                expect(err).to.not.exist;
+                expect(created).to.have.property('id');
+                expect(created.id).to.not.eql(null);
+                id = created.id;
+                done();
+            });
+        });
+
+        it('#exists', function (done) {
+            {name}.exists(id, function (err, exists) {
+                expect(err).to.not.exist;
+                expect(exists).to.be.true;
+                done();
+            });
+        });
+
+        it('#findById', function (done) {
+            {name}.findById(id, function (err, found) {
+                expect(err).to.not.exist;
+                expect(found.id).to.eql(id);
+                done();
+            });
+        });
+
+        it('#findOne', function (done) {
+            {name}.findOne({
+                where: {
+                    id: id
+                }
+            }, function (err, found) {
+                expect(err).to.not.exist;
+                expect(found.id).to.eql(id);
+                done();
+            });
+        });
+
+        it('#find', function (done) {
+            {name}.find({}, function (err, founds) {
+                expect(err).to.not.exist;
+                expect(founds).to.have.lengthOf(1);
+                done();
+            });
+        });
+
+        it('#all', function (done) {
+            {name}.all({}, function (err, founds) {
+                expect(err).to.not.exist;
+                expect(founds).to.have.lengthOf(1);
+                done();
+            });
+        });
+
+        it('#count', function (done) {
+            {name}.count({}, function (err, count) {
+                expect(err).to.not.exist;
+                expect(count).to.eql(1);
+                done();
+            });
+        });
+
+        it('#destroyById', function (done) {
+            {name}.destroyById(id, function (err) {
+                expect(err).to.not.exist;
+                {name}.findById(id, function (err, found) {
+                    expect(err).to.not.exist;
+                    expect(found).to.not.exist;
+                    done();
+                });
+            });
+        });
+
+    });
+});

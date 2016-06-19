@@ -5,6 +5,9 @@
  *  App based on CaminteJS
  *  CaminteJS homepage http://www.camintejs.com
  **/
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'production';
+}
 
 var express = require('express');
 var caminte = require('caminte');
@@ -21,7 +24,7 @@ var config = require('./config');
 var inflection = require('./lib/inflection');
 var Tools = require('./lib/tools');
 var XML = require('./lib/xml');
-
+var db = config.db[process.env.NODE_ENV];
 var modelsDir = path.join(__dirname, 'models');
 var app = express();
 app.models = {};
@@ -39,7 +42,7 @@ try {
             var count = files.length;
             if (count > 0) {
                 var Schema = caminte.Schema;
-                var schema = new Schema(config.db.driver, config.db);
+                var schema = new Schema(db.driver, db);
                 files.forEach(function(file) {
                     bootModel(app, schema, file);
                     if (--count === 0) {
@@ -73,7 +76,9 @@ app.on('models_loaded', function() {
     app.set('view engine', '{views}');
 
     app.use(favicon(__dirname + '/public/favicon.ico'));
-    app.use(logger('dev'));
+    if (process.env.NODE_ENV !== 'test') {
+        app.use(logger('dev'));
+    }
     app.use(multiparty({
         uploadDir: config.parser.uploadDir,
         keepExtensions: config.parser.keepExtensions,
@@ -99,12 +104,12 @@ app.on('models_loaded', function() {
     
     // routes
     app.get('/', routes.index);
-    app.get('/:table.:format?', checkReqType, checkParams, rest.index);
-    app.get('/:table/:id.:format?', checkReqType, checkParams, rest.show);
-    app.post('/:table.:format?', checkReqType, checkParams, rest.create);
-    app.put('/:table/:id.:format?', checkReqType, checkParams, rest.update);
-    app.delete('/:table/:id.:format?', checkReqType, checkParams, rest.destroy);
-    app.delete('/:table.:format?', checkReqType, checkParams, rest.destroyall);
+    app.get('/{prefix}/:table.:format?', checkReqType, checkParams, rest.index);
+    app.get('/{prefix}/:table/:id.:format?', checkReqType, checkParams, rest.show);
+    app.post('/{prefix}/:table.:format?', checkReqType, checkParams, rest.create);
+    app.put('/{prefix}/:table/:id.:format?', checkReqType, checkParams, rest.update);
+    app.delete('/{prefix}/:table/:id.:format?', checkReqType, checkParams, rest.destroy);
+    app.delete('/{prefix}/:table.:format?', checkReqType, checkParams, rest.destroyall);
 
     // catch 404 and forwarding to error handler
     app.use(function(req, res, next) {
@@ -196,12 +201,13 @@ function checkReqType(req, res, next) {
  * @param {Function} next
  */
 function checkParams(req, res, next) {
-    var table = req.params.table;
+    var table = req.params.table, tableSingular, tableModel;
     if (table) {
-        table = table.toLowerCase().singularize().capitalize();
-        if (req.app.models[table]) {
-            req.table = table;
-            req.model = req.app.models[table];
+        tableSingular = table.toLowerCase().singularize();
+        tableModel = tableSingular.capitalize();
+        if (tableSingular !== table.toString() && req.app.models[tableModel]) {
+            req.table = tableModel;
+            req.model = req.app.models[tableModel];
             next();
         } else {
             res.status(404)[req.format]({ error : 'collection ' + req.params.table + ' undefined' });

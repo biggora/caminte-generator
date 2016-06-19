@@ -1,0 +1,93 @@
+/**
+ *  {name} Unit Test
+ *  Created by create-test script
+ **/
+
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'test';
+}
+
+var chai = require('chai');
+var expect = chai.expect;
+var caminte = require('caminte');
+var config = require('../../config');
+var dbConf = config.db[process.env.NODE_ENV];
+var {name}Model = require('../../models/{name}');
+var Schema = caminte.Schema;
+dbConf.host = process.env.DB_HOST || dbConf.host;
+var schema = new Schema(dbConf.driver, dbConf);
+var {name} = {name}Model(schema);
+
+/**
+ * Simple tests for the {name} model
+ */
+describe('Unit {name}:', function () {
+    'use strict';
+    var user, id;
+
+    before(function (done) {
+        schema.autoupdate(function () {
+            'use strict';
+            done();
+        });
+    });
+
+    after(function (done) {
+       {name}.destroyAll(function (err) {
+              done();
+       });
+    });
+
+    describe('create unit', function () {
+
+        {nameToLowerCase} = new {name}();
+        it('{nameToLowerCase} should be object', function () {
+            expect({nameToLowerCase}).to.be.a('object');
+        });
+
+        it('validate {nameToLowerCase}', function (done) {
+            {nameToLowerCase}.isValid(function (valid) {
+                expect(valid).to.be.true;
+                if (!valid) console.log({nameToLowerCase}.errors);
+                done();
+            });
+        });
+
+    });
+
+    describe('#save()', function () {
+
+        it('should be have #save', function () {
+            expect({nameToLowerCase}).to.have.property('save');
+            expect({nameToLowerCase}.save).to.be.a('function');
+        });
+
+        it('call save()', function (done) {
+            {nameToLowerCase}.save(function (err) {
+                expect(err).to.not.exist;
+                expect({nameToLowerCase}).to.have.property('id');
+                expect({nameToLowerCase}.id).to.not.eql(null);
+                id = {nameToLowerCase}.id;
+                done();
+            });
+        });
+
+    });
+
+    describe('#destroy()', function () {
+
+        it('should be have #destroy', function () {
+            expect({nameToLowerCase}).to.have.property('destroy');
+            expect({nameToLowerCase}.destroy).to.be.a('function');
+        });
+
+        it('call destroy()', function (done) {
+            {nameToLowerCase}.destroy(function (err) {
+                expect(err).to.not.exist;
+                done();
+            });
+        });
+
+    });
+
+});

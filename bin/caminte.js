@@ -23,6 +23,7 @@ program
     .option('-g, --generate <modelname]', 'generate data model')
     .option('-s, --server', 'runs caminte server')
     .option('-a, --adapter', 'database adapter (mysql|redis|etc...)')
+    .option('-p, --prefix <prefix>', 'api url prefix defaults v1', 'v1')
     .option('-j, --jade', 'add jade engine support (defaults to ejs)')
     .option('-H, --hogan', 'add hogan.js engine support')
     .option('-c, --css <engine>', 'add css <engine> support (less|stylus|compass) (defaults to plain css)')
@@ -59,9 +60,10 @@ if (!program.init && !program.generate && !program.server) {
     destination_path += program.init;
     createApplication(destination_path);
 } else if (program.generate) {
+    var fields = parseFields();
     program.generate = program.generate.toLowerCase().singularize();
-    destination_path += 'models';
-    createModel(destination_path);
+    createModel(destination_path + 'models', fields);
+    createTest(destination_path + 'test', fields);
 } else if (program.server) {
     destination_path += 'bin/www';
     if (fs.existsSync(destination_path)) {
@@ -111,17 +113,37 @@ function createApplication(path) {
 }
 
 // Generate Model
-function createModel(root) {
+function createModel(root, fields) {
     var modelName = program.generate.toLowerCase().capitalize();
     var pathToModel = path.resolve(root + '/' + modelName + '.js');
     existsFile(pathToModel, function (empty) {
         if (!empty || program.force) {
-            createModelAt(root, modelName);
+            createModelAt(root, modelName, fields);
         } else {
             program.confirm('model is exists, continue? ', function (ok) {
                 if (ok) {
                     process.stdin.destroy();
-                    createModelAt(root, modelName);
+                    createModelAt(root, modelName, fields);
+                } else {
+                    abort('aborting');
+                }
+            });
+        }
+    });
+}
+
+// Generate Test
+function createTest(root, fields) {
+    var modelName = program.generate.toLowerCase().capitalize();
+    var pathToTest = path.resolve(root + '/routes/' + modelName + 'Route.js');
+    existsFile(pathToTest, function (empty) {
+        if (!empty || program.force) {
+            createTestAt(root, modelName, fields);
+        } else {
+            program.confirm('test is exists, continue? ', function (ok) {
+                if (ok) {
+                    process.stdin.destroy();
+                    createTestAt(root, modelName, fields);
                 } else {
                     abort('aborting');
                 }
@@ -136,15 +158,43 @@ function createModel(root) {
  * @param {String} pathToModels
  * @param {String} modelName
  */
-function createModelAt(pathToModels, modelName) {
+function createModelAt(pathToModels, modelName, fields) {
     var modelFile = path.normalize(pathToModels + '/' + modelName + '.js');
     var modelTemplate = fs.readFileSync(__dirname + '/../templates/model/Model.ejs', 'utf-8');
-    // mkdir(path + '/models');
-    var fields = parseFields();
     modelTemplate = modelTemplate.replace('{fields}', fields.join(',\n'));
     modelTemplate = modelTemplate.replace(/{name}/gi, modelName);
     modelTemplate = modelTemplate.replace('{nameToLowerCase}', modelName.toLowerCase());
     write(modelFile, modelTemplate);
+    // createTestAt(pathToTests, modelName, fields);
+}
+
+/**
+ * Create test at the given `name`.
+ *
+ * @param {String} pathToTests
+ * @param {String} modelName
+ */
+function createTestAt(pathToTests, modelName, fields) {
+    var projectPKG = require(process.cwd() + '/package.json');
+    var routeFile = path.normalize(pathToTests + '/routes/' + modelName + 'Route.js');
+    var modelFile = path.normalize(pathToTests + '/models/' + modelName + 'Model.js');
+    var unitFile = path.normalize(pathToTests + '/units/' + modelName + 'Unit.js');
+    var routeTemplate = fs.readFileSync(__dirname + '/../templates/test/route.ejs', 'utf-8');
+    var modelTemplate = fs.readFileSync(__dirname + '/../templates/test/model.ejs', 'utf-8');
+    var unitTemplate = fs.readFileSync(__dirname + '/../templates/test/unit.ejs', 'utf-8');
+    modelTemplate = modelTemplate.replace(new RegExp('{name}','gi'), modelName);
+    modelTemplate = modelTemplate.replace(new RegExp('{prefix}','gi'), projectPKG.api);
+    modelTemplate = modelTemplate.replace(new RegExp('{nameToLowerCase}','gi'), modelName.toLowerCase());
+    routeTemplate = routeTemplate.replace(new RegExp('{name}','gi'), modelName);
+    routeTemplate = routeTemplate.replace(new RegExp('{prefix}','gi'), projectPKG.api);
+    routeTemplate = routeTemplate.replace(new RegExp('{nameToLowerCase}','gi'), modelName.toLowerCase());
+    routeTemplate = routeTemplate.replace(new RegExp('{namePluralized}','gi'), modelName.toLowerCase().pluralize());
+    unitTemplate = unitTemplate.replace(new RegExp('{name}','gi'), modelName);
+    unitTemplate = unitTemplate.replace(new RegExp('{prefix}','gi'), projectPKG.api);
+    unitTemplate = unitTemplate.replace(new RegExp('{nameToLowerCase}','gi'), modelName.toLowerCase());
+    write(modelFile, modelTemplate);
+    write(routeFile, routeTemplate);
+    write(unitFile, unitTemplate);
 }
 
 // parse Fields
@@ -154,10 +204,10 @@ function parseFields() {
         // Skip the first two - Node and app.js path
         if (i > 3) {
             var fdata = process.argv[i].split(':');
-            var field = '';
-            if (fdata[1]) {
-                var type = 'type : String';
-                switch (type) {
+            var field = '', type = '', fType = (fdata[1] || '').toLowerCase();
+
+            if (fType !== '') {
+                switch (fType) {
                     case 'int':
                     case 'integer':
                     case 'double':
@@ -178,6 +228,9 @@ function parseFields() {
                     case 'json':
                         type = 'type : schema.JSON';
                         break;
+                    case 'date':
+                        type = 'type : Date';
+                        break;
                     default:
                         type = 'type : String';
                 }
@@ -188,6 +241,7 @@ function parseFields() {
             if (fdata[2]) {
                 field += ", 'default' : " + fdata[2];
             }
+
             fields.push('           ' + fdata[0] + ' : { ' + field + ' }');
         }
     }
@@ -216,6 +270,12 @@ function createApplicationAt(path) {
 
     mkdir(path, function () {
         mkdir(path + '/models');
+        mkdir(path + '/test');
+        mkdir(path + '/test/units');
+        mkdir(path + '/test/models');
+        mkdir(path + '/test/routes', function () {
+            copy(__dirname + '/../templates/test/index.js', path + '/test/index.js');
+        });
         mkdir(path + '/public', function () {
             copy(__dirname + '/../templates/favicon.ico', path + '/public/favicon.ico');
         });
@@ -282,24 +342,37 @@ function createApplicationAt(path) {
         }
 
         // Template support
-        app = app.replace('{views}', program.template);
+        app = app
+            .replace(new RegExp('{views}','gi'), program.template)
+            .replace(new RegExp('{prefix}','gi'), program.prefix);
 
         // package.json
         var pkg = {
-            name: program.init
-            , version: '0.0.1'
-            , private: true
-            , scripts: {start: 'node ./bin/www'}
-            , dependencies: {
-                'caminte': '>=0.0.21',
-                'express': '>=4.0.0',
-                'serve-favicon': '>=2.0.0',
-                'morgan': '>=1.2.0',
-                'cookie-parser': '>=1.3.0',
-                'body-parser': '>=1.6.0',
-                'method-override': '>=2.1.3',
-                'connect-multiparty': '>=1.0.0',
-                'debug': '>=0.7.4'
+            name: program.init,
+            description: 'RestFul API server',
+            version: '0.0.1',
+            keywords: ['rest','api','caminte'],
+            private: true,
+            api: program.prefix,
+            scripts: {
+                start: 'node ./bin/www',
+                test: 'mocha'
+            },
+            dependencies: {
+                'caminte': '^0.0.21',
+                'express': '^4.0.0',
+                'serve-favicon': '^2.0.0',
+                'morgan': '^1.2.0',
+                'cookie-parser': '^1.3.0',
+                'body-parser': '^1.6.0',
+                'method-override': '^2.1.3',
+                'connect-multiparty': '^1.0.0',
+                'debug': '^0.7.4'
+            },
+            devDependencies:{
+                'mocha': '^2.5.3',
+                'chai': '^3.5.0',
+                'supertest':'^1.2.0'
             }
         };
 
@@ -340,7 +413,7 @@ function createApplicationAt(path) {
         });
         mkdir(path + '/uploads');
         mkdir(path + '/config', function () {
-            var dbPort = 3306, dbBase = 'test';
+            var dbPort = 3306, dbBase = 'database';
             switch (program.adapter) {
                 case 'redis':
                     dbPort = 6379;
@@ -367,13 +440,13 @@ function createApplicationAt(path) {
                     break;
                 case 'sqlite3':
                     dbPort = 0;
-                    dbBase = './dbs/test.sqlite';
+                    dbBase = './dbs/'+dbBase+'.sqlite';
                     mkdir(path + '/dbs');
                     break;
             }
-            cfg = cfg.replace('{driver}', program.adapter);
-            cfg = cfg.replace('{port}', dbPort);
-            cfg = cfg.replace('{database}', dbBase);
+            cfg = cfg.replace(new RegExp('{driver}', 'gi'), program.adapter);
+            cfg = cfg.replace(new RegExp('{port}', 'gi'), dbPort);
+            cfg = cfg.replace(new RegExp('{database}', 'gi'), dbBase);
 
             write(path + '/config/index.js', cfg, 0755);
         });

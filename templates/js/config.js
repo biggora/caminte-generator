@@ -8,15 +8,33 @@
 
 module.exports = {
     port : 3000,
-    debug : true,
-    autoupdate : true,
+    debug : false,
+    autoupdate : true,    
     db: {
-        driver: "{driver}",
-        host: "127.0.0.1",
-        port: "{port}",
-        // username: "test",
-        // password: "test",
-        database: "{database}" //, pool : true
+        production: {
+            driver: "{driver}",
+            host: "127.0.0.1",
+            port: "{port}",
+            // username: "test",
+            // password: "test",
+            database: "{database}" //, pool : true
+        },
+        development: {
+            driver: "{driver}",
+            host: "127.0.0.1",
+            port: "{port}",
+            // username: "test",
+            // password: "test",
+            database: "{database}_dev"
+        },
+        test: {
+            driver: "{driver}",
+            host: "127.0.0.1",
+            port: "{port}",
+            // username: "test",
+            // password: "test",
+            database: "{database}_test"
+        }
     },
     parser: {
         encoding: "utf-8",

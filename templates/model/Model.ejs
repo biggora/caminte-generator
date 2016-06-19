@@ -4,6 +4,7 @@
  *  Created by create model script
  *  App based on CaminteJS
  *  CaminteJS homepage http://www.camintejs.com
+ *  WIKI: https://github.com/biggora/caminte/wiki
  **/
 
 /**
@@ -15,5 +16,13 @@ module.exports = function(schema){
     var {name} = schema.define('{nameToLowerCase}', {
 {fields}
     });
+
+    /**
+     * Define Indices and Primary Keys help page
+     * https://github.com/biggora/caminte/wiki/Defining-a-Model#define-indices
+     * Setup Relationships and Validations help page
+     * https://github.com/biggora/caminte/wiki/Setup-Relationships-&-Validations#setup-validations
+     **/
+
     return {name};
 };
