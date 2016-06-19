@@ -5,13 +5,16 @@
 var request = require('supertest');
 var chai = require('chai');
 var expect = chai.expect;
-var app = require('../../app');
 var id, item, updated, list;
+if(!app) {
+    var app = require('../../app');
+}
 
 describe('Routes for {name}:', function () {
 
-    before(function () {
-        app.listen(3000);
+    before(function (done) {
+        if(!app) app.listen(3000);
+        done();
     });
 
     it('#index GET /{prefix}/{namePluralized}', function (done) {

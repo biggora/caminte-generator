@@ -11,9 +11,14 @@ if (!process.env.NODE_ENV) {
 }
 
 var fs = require('fs');
+global.app = require('../app');
+
 var onlyJs = function(file) {
-   return /\.js$/.test(file);
+    return /\.js$/.test(file);
 };
+
+/* start app */
+app.listen(3000);
 
 /* units tests */
 var units = fs.readdirSync(__dirname+'/units').filter(onlyJs);
