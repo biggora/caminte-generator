@@ -94,6 +94,7 @@
     -h, --help                  output usage information
     -V, --version               output the version number
     -i, --init <appname>        create caminte application
+    -p, --prefix <prefix>       api url prefix defaults v1
     -g, --generate <modelname]  generate data model
     -s, --server                runs caminte server
     -a, --adapter               database adapter (mysql|redis|etc...)
