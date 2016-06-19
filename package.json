@@ -41,11 +41,10 @@
     "type": "git",
     "url": "git://github.com/biggora/caminte-generator"
   },
-  "main": "bin/caminte.js",
+  "main": "bin/cjs",
   "bin": {
-    "caminte": "./bin/caminte.js",
-    "camintejs": "./bin/caminte.js",
-    "cjs": "./bin/caminte.js"
+    "cjs": "./bin/cjs",
+    "cjs-rest": "./bin/cjs"
   },
   "engines": {
     "node": ">= 0.10.0"

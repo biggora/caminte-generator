@@ -39,7 +39,7 @@
  Create the app:
 
     $ npm install -g caminte-generator
-    $ caminte -i test && cd ./test
+    $ cjs -i test && cd ./test
 
  Install dependencies:
 
@@ -49,11 +49,11 @@
 
  Create model:
 
-    $ caminte -g User name email password desciption:text created:date
+    $ cjs -g User name email password desciption:text created:date
 
  Run server:
 
-    $ caminte -s
+    $ cjs -s
 
 #### Calling a REST server with Command Line cURL
 
@@ -87,7 +87,7 @@
 
 ### Usage
 
-    $ caminte [options] [dir]
+    $ cjs [options] [dir]
 
 ### Options
 
@@ -105,10 +105,10 @@
 ### Examples
 
     # create new restful application
-    $ caminte -i Test -a mysql -j
+    $ cjs -i Test -a mysql -j
 
     # create model
-    $ caminte -g Post active:bool name:string desc:text created:date
+    $ cjs -g Post active:bool name:string desc:text created:date
 
 ### Routes
 
