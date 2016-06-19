@@ -34,7 +34,7 @@
 
 ## Quick Start
 
- The quickest way to get started with caminte is to utilize the executable `caminte(1)` to generate an application as shown below:
+ The quickest way to get started with caminte-generator is to utilize the executable `cjs(1)` to generate an application as shown below:
 
  Create the app:
 
