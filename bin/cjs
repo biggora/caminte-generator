@@ -357,6 +357,7 @@ function createApplicationAt(path) {
             api: program.prefix,
             scripts: {
                 start: 'node ./bin/www',
+                run: "cjs -s",
                 test: 'mocha'
             },
             dependencies: {
@@ -412,6 +413,12 @@ function createApplicationAt(path) {
             www = www.replace('{app}', program.init);
             write(path + '/bin/www', www, 0755);
         });
+
+        copy(__dirname + '/../templates/js/.editorconfig', path + '/.editorconfig');
+        copy(__dirname + '/../templates/js/.gitignore', path + '/.gitignore');
+        copy(__dirname + '/../templates/js/.gitattributes', path + '/.gitattributes');
+        copy(__dirname + '/../templates/js/.jshintrc', path + '/.jshintrc');
+        
         mkdir(path + '/uploads');
         mkdir(path + '/config', function () {
             var dbPort = 3306, dbBase = 'database';
