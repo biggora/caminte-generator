@@ -23,7 +23,7 @@ program
     .option('-g, --generate <modelname]', 'generate data model')
     .option('-s, --server', 'runs caminte server')
     .option('-a, --adapter', 'database adapter (mysql|redis|etc...)')
-    .option('-p, --prefix <prefix>', 'api url prefix defaults v1', 'v1')
+    .option('-p, --prefix <prefix>', 'api url prefix defaults api', 'api')
     .option('-j, --jade', 'add jade engine support (defaults to ejs)')
     .option('-H, --hogan', 'add hogan.js engine support')
     .option('-c, --css <engine>', 'add css <engine> support (less|stylus|compass) (defaults to plain css)')
@@ -361,7 +361,7 @@ function createApplicationAt(path) {
                 test: 'mocha'
             },
             dependencies: {
-                'caminte': '^0.0.21',
+                'caminte': '^0.2.13',
                 'express': '^4.0.0',
                 'serve-favicon': '^2.0.0',
                 'morgan': '^1.2.0',
@@ -379,6 +379,10 @@ function createApplicationAt(path) {
         };
 
         pkg.dependencies[program.adapter] = '*';
+
+        if(program.adapter === 'sqlite3'){
+            pkg.dependencies[program.adapter] = '^3.1.4';
+        }
 
         switch (program.template) {
             case 'jade':

@@ -59,31 +59,31 @@
 
  Create User:
 
-    $ curl -X POST http://localhost:3000/v1/users -i -H "Content-type: application/json" -d "{\"name\":\"Alex Gora\",\"created\":\"2014-01-01\"}"
+    $ curl -X POST http://localhost:3000/api/users -i -H "Content-type: application/json" -d "{\"name\":\"Alex Gora\",\"created\":\"2014-01-01\"}"
     # or
-    $ curl -X POST http://localhost:3000/v1/users -i -d "name=Alex%20Gora&created=2014-01-01"
+    $ curl -X POST http://localhost:3000/api/users -i -d "name=Alex%20Gora&created=2014-01-01"
  
  Update User:
  
-    $ curl -X PUT http://localhost:3000/v1/users/1 -i -H "Content-type: application/json" -d "{\"pass\":\"6r87uyfGFTg\",\"email\":\"example@example.com\"}"
+    $ curl -X PUT http://localhost:3000/api/users/1 -i -H "Content-type: application/json" -d "{\"pass\":\"6r87uyfGFTg\",\"email\":\"example@example.com\"}"
     # or
-    $ curl -X PUT http://localhost:3000/v1/users/1 -i -d "pass=6r87uyfGFTg&email=example@example.com"
+    $ curl -X PUT http://localhost:3000/api/users/1 -i -d "pass=6r87uyfGFTg&email=example@example.com"
 
  Get Users:
 
-    $ curl -X GET http://localhost:3000/v1/users -i -H "Content-type: application/json" -d "{\"skip\":\"0\",\"limit\":\"10\",\"sort\":\"id:desc\"}" 
+    $ curl -X GET http://localhost:3000/api/users -i -H "Content-type: application/json" -d "{\"skip\":\"0\",\"limit\":\"10\",\"sort\":\"id:desc\"}" 
     # or
-    $ curl -X GET http://localhost:3000/v1/users -i -d "skip=0&limit=10&sort=id:desc" 
+    $ curl -X GET http://localhost:3000/api/users -i -d "skip=0&limit=10&sort=id:desc" 
 
  Delete User:
 
-    $ curl -X DELETE http://localhost:3000/v1/users/1 -i
+    $ curl -X DELETE http://localhost:3000/api/users/1 -i
 
  Search:
     
-    $ curl -X GET http://localhost:3000/v1/users -i -H "Content-type: application/json"  -d "{\"search\":\"name:alex\"}"
+    $ curl -X GET http://localhost:3000/api/users -i -H "Content-type: application/json"  -d "{\"search\":\"name:alex\"}"
     # or
-    $ curl -X GET http://localhost:3000/v1/users -i -d "search=name:alex" 
+    $ curl -X GET http://localhost:3000/api/users -i -d "search=name:alex" 
 
 ### Usage
 
@@ -117,12 +117,12 @@ will provide the following routes:
 
     method        route                    action 
     ------------------------------------------------------------
-    GET           /v1/:table                  index      
-    GET           /v1/:table/:id              show       
-    POST          /v1/:table                  create    
-    PUT           /v1/:table/:id              update      
-    DELETE        /v1/:table/:id              destroy    
-    DELETE        /v1/:table                  destroyall  
+    GET           /api/:table                  index      
+    GET           /api/:table/:id              show       
+    POST          /api/:table                  create    
+    PUT           /api/:table/:id              update      
+    DELETE        /api/:table/:id              destroy    
+    DELETE        /api/:table                  destroyall  
 
 ### Directory structure
 
